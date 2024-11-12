@@ -13,16 +13,24 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        # Each feature flag combination. GitHub will run these in parallel because magic.
+        features:
+          - ""
+          - "async_mode"
+          - "use_dependencies"
+          - "async_mode use_dependencies"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup protoc
       uses: arduino/setup-protoc@v2.0.0
-    - name: Build
-      run: cargo build --verbose
-    - name: Test
-      run: cargo test --verbose
-    - name: Test async mode
-      run: cargo test --features async_mode --verbose
-    - name: Test with third-party libs
-      run: cargo test --features use_dependencies --verbose
+    - name: Run tests
+      run: |
+        if [ -z "${{ matrix.features }}" ]; then
+          cargo test --verbose
+        else
+          cargo test --verbose --features "${{ matrix.features }}"
+        fi
