@@ -221,7 +221,7 @@ mod api_tests {
         sync::{mpsc::SendError, Mutex},
     };
     use tokio::net::TcpListener;
-    use tower::ServiceExt; // for `oneshot`
+    use tower::util::ServiceExt; // for `oneshot`
 
     #[cfg(not(feature = "use_dependencies"))]
     use crate::deps::mime;
