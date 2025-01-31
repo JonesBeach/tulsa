@@ -1,3 +1,5 @@
+use std::io::Read;
+
 use prost::{bytes::Bytes, Message};
 use reqwest::Client;
 use tokio::time::{Duration, Interval};
@@ -54,10 +56,10 @@ pub fn fetch_sync(feed: &Feed) -> usize {
 
     let mut request = ureq::get(&feed.url);
     for (key, value) in feed.headers.iter() {
-        request = request.set(key, value);
+        request = request.header(key, value);
     }
 
-    let response = request
+    let mut response = request
         .call()
         .map_err(|e| {
             eprintln!("Error fetching {}: {}", feed.name, e);
@@ -66,7 +68,11 @@ pub fn fetch_sync(feed: &Feed) -> usize {
         .unwrap();
 
     let mut vec_bytes = Vec::new();
-    response.into_reader().read_to_end(&mut vec_bytes).unwrap();
+    response
+        .body_mut()
+        .as_reader()
+        .read_to_end(&mut vec_bytes)
+        .expect("Failed to read body");
     let bytes: Bytes = vec_bytes.into();
 
     let b = FeedMessage::decode(bytes)

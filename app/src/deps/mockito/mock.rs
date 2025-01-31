@@ -1,8 +1,8 @@
 use hyper::body::Incoming;
 use hyper::Request;
 use hyper::StatusCode;
-use rand;
 use std::sync::{Arc, RwLock};
+use uuid::Uuid;
 
 use super::state::State;
 
@@ -23,7 +23,7 @@ impl Default for Response {
 
 #[derive(Clone)]
 pub struct InnerMock {
-    pub id: usize,
+    pub id: Uuid,
     pub method: String,
     pub path: String,
     pub response: Response,
@@ -41,7 +41,7 @@ impl Mock {
         Mock {
             state,
             inner: InnerMock {
-                id: rand::random(),
+                id: Uuid::new_v4(),
                 method: method.to_owned().to_uppercase(),
                 path: path.to_owned(),
                 response: Response::default(),

@@ -6,6 +6,12 @@ pub struct State {
 
 impl State {
     pub fn new() -> Self {
-        State { mocks: vec![] }
+        Self { mocks: vec![] }
+    }
+}
+
+impl Default for State {
+    fn default() -> Self {
+        Self::new()
     }
 }

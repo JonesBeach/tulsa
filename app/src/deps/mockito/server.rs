@@ -7,7 +7,6 @@ use hyper::{
 };
 use hyper_util::rt::TokioIo;
 use std::{
-    future::Future,
     net::SocketAddr,
     sync::{Arc, RwLock},
     thread,
@@ -62,12 +61,19 @@ impl Server {
         Server { address, state }
     }
 
-    pub fn mock(&self, method: &str, path: &str) -> Mock {
+    // Self doesn't technically need to be mutable but we do this to match the mockito interface.
+    pub fn mock(&mut self, method: &str, path: &str) -> Mock {
         Mock::new(self.state.clone(), method, path)
     }
 
     pub fn url(&self) -> String {
-        format!("http://{}", self.address.to_string())
+        format!("http://{}", self.address)
+    }
+}
+
+impl Default for Server {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

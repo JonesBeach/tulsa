@@ -5,26 +5,26 @@ edition = "2021"
 
 [dependencies]
 tulsa = { path = "../tulsa" }
-axum = "0.7.2"
+axum = "0.8"
 hyper = { version = "1.0.1", features = ["client", "server"] }
-prost = "0.12"
-rand = "0.8.5"
+prost = "0.13"
 reqwest = { version = "0.12.5", features = ["json", "blocking"] }
 serde = { version = "1.0.171", features = ["derive"] }
 serde_json = "1.0.103"
 tokio = { version = "1.32.0", features = ["macros", "rt-multi-thread"] }
 tower = { version = "0.5.0", features = ["util"] }
-ureq = "2.7.1"
+ureq = "3"
 mime = { version = "0.3.17", optional = true }
 mockito = { version = "1.4.0", optional = true }
 hyper-util = { version = "0.1.1", features = ["full"] }
 http-body-util = "0.1.0"
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
+uuid = { version = "1", features = ["v4"] }
 
 [build-dependencies]
-prost-build = { version = "0.12" }
+prost-build = "0.13"
 
 [features]
-use_dependencies = [ "mime", "mockito" ]
+use_dependencies = ["mime", "mockito"]
 async_mode = []

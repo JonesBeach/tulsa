@@ -52,7 +52,7 @@ where
     Router::new()
         .route("/", get(status_handler))
         .route(
-            "/feed/:key",
+            "/feed/{key}",
             get(get_handler).put(put_handler).delete(delete_handler),
         )
         .route("/feed", post(post_handler).get(list_handler))
@@ -218,6 +218,7 @@ mod api_tests {
     };
     use std::{
         net::SocketAddr,
+        str,
         sync::{mpsc::SendError, Mutex},
     };
     use tokio::net::TcpListener;
@@ -304,10 +305,11 @@ mod api_tests {
 
         assert_eq!(response.status(), StatusCode::BAD_REQUEST);
 
-        let body = axum::body::to_bytes(response.into_body(), usize::MAX)
+        let body_bytes = axum::body::to_bytes(response.into_body(), usize::MAX)
             .await
             .unwrap();
-        assert_eq!(&body[..], b"Invalid URL: Cannot parse `\"abc\"` to a `u64`");
+        let body_str = str::from_utf8(&body_bytes).expect("Response body is not valid UTF-8");
+        assert_eq!(body_str, "Invalid URL: Cannot parse `abc` to a `u64`");
 
         let sender = MockSender::new();
         let interface = Arc::new(SchedulerInterface::new(sender.clone()));
@@ -323,10 +325,11 @@ mod api_tests {
 
         assert_eq!(response.status(), StatusCode::BAD_REQUEST);
 
-        let body = axum::body::to_bytes(response.into_body(), usize::MAX)
+        let body_bytes = axum::body::to_bytes(response.into_body(), usize::MAX)
             .await
             .unwrap();
-        assert_eq!(&body[..], b"Invalid URL: Cannot parse `\"-1\"` to a `u64`");
+        let body_str = str::from_utf8(&body_bytes).expect("Response body is not valid UTF-8");
+        assert_eq!(body_str, "Invalid URL: Cannot parse `-1` to a `u64`");
     }
 
     #[tokio::test]

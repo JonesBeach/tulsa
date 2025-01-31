@@ -13,6 +13,8 @@ impl AsRef<str> for MimeType {
 }
 
 enum Source {
+    // We don't read the u8 field right now.
+    #[allow(dead_code)]
     Atom(u8, &'static str),
     // We don't use this right now and I don't understand when you would need
     // it. Keeping it in case I get inspired in the future.
