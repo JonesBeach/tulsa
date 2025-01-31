@@ -15,13 +15,6 @@ serde_json = "1.0.103"
 tokio = { version = "1.32.0", features = ["macros", "rt-multi-thread"] }
 tower = { version = "0.5.0", features = ["util"] }
 ureq = "2.7.1"
-petgraph = "0.6.3" # for prost_build
-prost-types = "0.12" # for prost_build
-itertools = "0.13.0" # for prost_build
-multimap = "0.10.0" # for prost_build
-lazy_static = "1.4.0" # for prost_build
-heck = "0.5.0" # for prost_build
-regex = "1.9.3" # for prost_build
 mime = { version = "0.3.17", optional = true }
 mockito = { version = "1.4.0", optional = true }
 hyper-util = { version = "0.1.1", features = ["full"] }
@@ -30,16 +23,8 @@ tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 
 [build-dependencies]
-prost-build = { version = "0.12", optional = true }
-prost = "0.12"
-petgraph = "0.6.3" # for prost_build
-prost-types = "0.12" # for prost_build
-itertools = "0.13.0" # for prost_build
-multimap = "0.10.0" # for prost_build
-lazy_static = "1.4.0" # for prost_build
-heck = "0.5.0" # for prost_build
-regex = "1.9.3" # for prost_build
+prost-build = { version = "0.12" }
 
 [features]
-use_dependencies = [ "mime", "mockito", "prost-build" ]
+use_dependencies = [ "mime", "mockito" ]
 async_mode = []
